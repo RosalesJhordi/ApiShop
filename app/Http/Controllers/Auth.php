@@ -11,10 +11,11 @@ class Auth extends Controller
 {
     // Registro
 
-    public function registro(Request $request){
+    public function registro(Request $request)
+    {
 
         //Validaciones
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'nombres' => 'required',
             'apellidos' => 'required',
             'telefono' => 'required',
@@ -22,7 +23,9 @@ class Auth extends Controller
             'password' => 'required|confirmed|min:6'
         ]);
 
-        if($validator->fails()){
+
+        //Retornar JSON con los errores
+        if ($validator->fails()) {
             return response()->json($validator->errors());
         }
 
@@ -46,7 +49,18 @@ class Auth extends Controller
         //Retornar Token en una respuesta JSON
 
         return response()->json([
-           'token' => $token
+            'token' => $token
         ]);
+    }
+
+    //Mostrar usuarios en formato JSON
+
+    public function all()
+    {
+        //Selectar todos los usuarios que hay en BD
+        $users = User::all();
+
+        //Retornar respuesta JSON con los usuarios
+        return response()->json($users);
     }
 }
